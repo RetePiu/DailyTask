@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Task Manager - Neo Brutalism</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        
+        <!-- Sidebar: Daily Tasks Index (Hidden by default) -->
+        <aside id="sidebar-tasks" class="sidebar">
+            <div class="sidebar-header">
+                <h2>Daily Tasks</h2>
+                <button id="close-sidebar" class="icon-btn" aria-label="Chiudi Tabella">✕</button>
+            </div>
+            
+            <div class="sidebar-content">
+                <div id="active-tasks-list" class="active-tasks-list">
+                    <!-- Injected active tasks -->
+                </div>
+                
+                <div class="add-task-form">
+                    <h3>Aggiungi Nuova Task</h3>
+                    <div class="form-group">
+                        <select id="new-task-icon" class="neo-input" aria-label="Seleziona icona">
+                            <option value="💧">💧 Acqua</option>
+                            <option value="🏃‍♂️">🏃‍♂️ Sport</option>
+                            <option value="📚">📚 Lettura</option>
+                            <option value="💻">💻 Codice</option>
+                            <option value="🧘">🧘 Relax</option>
+                            <option value="💪">💪 Palestra</option>
+                            <option value="🎥">🎥 Video</option>
+                            <option value="✉️">✉️ Mail</option>
+                            <option value="🛒">🛒 Spesa</option>
+                            <option value="📍">📍 Luogo</option>
+                            <option value="🎵">🎵 Musica</option>
+                            <option value="❤️">❤️ Cuore</option>
+                            <option value="💡">💡 Idea</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="new-task-name" class="neo-input" placeholder="Nome Task (es. Bere Acqua)" autocomplete="off">
+                    </div>
+                    <button id="btn-add-task" class="neo-btn primary">Aggiungi</button>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Sidebar Overlay -->
+        <div id="sidebar-overlay" class="overlay"></div>
+
+        <!-- Main Calendar View -->
+        <div id="calendar-view" class="view active">
+            
+            <!-- Absolute Lateral Navigation -->
+            <button id="prev-month" class="nav-arrow left" aria-label="Mese Precedente">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+            </button>
+            
+            <button id="next-month" class="nav-arrow right" aria-label="Mese Successivo">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+            </button>
+
+            <header class="calendar-header">
+                <div class="header-actions">
+                    <button id="today-btn" class="neo-btn small">Oggi</button>
+                    <button id="open-sidebar-btn" class="neo-btn small">Aggiungi Task</button>
+                </div>
+                <h1 id="month-year-display">Nome Mese 2026</h1>
+            </header>
+            
+            <div class="calendar-card">
+                <div class="calendar-grid-header">
+                    <span>LUN</span><span>MART</span><span>MERC</span><span>GIOV</span><span>VEN</span><span>SAB</span><span>DOM</span>
+                </div>
+                <div id="calendar-grid" class="calendar-grid">
+                    <!-- Days injected via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Day Tasks View -->
+        <div id="day-view" class="view">
+            <header class="day-header">
+                <button id="back-btn" class="neo-btn small icon-only" aria-label="Torna al Calendario">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <h2 id="current-day-display">Data Selezionata</h2>
+                <div style="width:40px"></div>
+            </header>
+            
+            <div class="table-container">
+                <div id="tasks-container" class="tasks-container">
+                    <!-- Tasks injected via JS -->
+                </div>
+                
+                <div class="empty-state" id="empty-tasks-state" style="display: none;">
+                    <p>Nessuna task attiva. Aggiungile dalla schermata Home!</p>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script src="main.js"></script>
+</body>
+</html>
