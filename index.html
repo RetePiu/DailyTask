@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Task Manager - V3 Flat</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="app">
+        
+        <!-- =================== LANDING PAGE =================== -->
+        <div id="landing-view" class="view active" style="padding: 0; justify-content: center; align-items: center; background: #ffffff;">
+            <div class="landing-container">
+                <!-- House button -->
+                <div id="btn-home-house" class="sprite-home home-house"></div>
+                
+                <!-- Welcome Text -->
+                <h1 id="landing-welcome" class="landing-welcome">BENVENUTO</h1>
+                
+                <!-- Sub buttons (Wrench & Graph) -->
+                <div id="landing-sub-btns" class="landing-sub-btns">
+                    <div id="btn-home-wrench" class="sprite-home home-wrench"></div>
+                    <div id="btn-home-graph" class="sprite-home home-graph"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar: Add Task List (Hidden by default) -->
+        <aside id="sidebar-tasks" class="sidebar">
+            <div class="sidebar-header">
+                <h2>Daily Tasks Index</h2>
+                <button id="close-sidebar" class="icon-btn" aria-label="Chiudi Tabella">✕</button>
+            </div>
+            
+            <div class="sidebar-content">
+                <div id="active-tasks-list" class="active-tasks-list">
+                    <!-- Injected active tasks -->
+                </div>
+                
+                <div class="add-task-form">
+                    <h3>Aggiungi Nuova Task</h3>
+                    <div class="form-group">
+                        <select id="new-task-icon" class="flat-input" aria-label="Seleziona categoria">
+                            <option value="icon-lettura">Lettura</option>
+                            <option value="icon-allenamento">Allenamento</option>
+                            <option value="icon-video">Video</option>
+                            <option value="icon-musica">Musica</option>
+                            <option value="icon-codice">Computer/Codice</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <input type="text" id="new-task-name" class="flat-input" placeholder="Nome Task" autocomplete="off">
+                    </div>
+                    <button id="btn-add-task" class="flat-btn primary">Aggiungi</button>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Modal: Add Project (Hidden by default) -->
+        <aside id="modal-project" class="sidebar">
+            <div class="sidebar-header">
+                <h2>Nuovo Progetto</h2>
+                <button id="close-project-modal" class="icon-btn" aria-label="Chiudi Modale">✕</button>
+            </div>
+            <div class="sidebar-content">
+                <div class="add-task-form">
+                    <div class="form-group">
+                        <select id="new-proj-icon" class="flat-input" aria-label="Seleziona categoria">
+                            <option value="icon-lettura">Lettura</option>
+                            <option value="icon-allenamento">Allenamento</option>
+                            <option value="icon-video">Video</option>
+                            <option value="icon-musica">Musica</option>
+                            <option value="icon-codice">Computer/Codice</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="new-proj-name" class="flat-input" placeholder="Nome Progetto" autocomplete="off">
+                    </div>
+                    <button id="btn-add-proj" class="flat-btn primary">Crea Progetto</button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Sidebar Overlay -->
+        <div id="sidebar-overlay" class="overlay"></div>
+
+        <!-- =================== CALENDAR VIEW =================== -->
+        <div id="calendar-view" class="view scrollable-view">
+            <header class="app-header">
+                <button class="flat-btn small back-to-home-btn">🏠 Home</button>
+                <div style="flex-grow:1"></div>
+                <button id="btn-open-sidebar" class="flat-btn primary">+ Aggiungi Task</button>
+            </header>
+
+            <header class="calendar-header">
+                <div class="header-actions">
+                    <button id="today-btn" class="flat-btn small">Oggi</button>
+                </div>
+                <h1 id="month-year-display">Nome Mese 2026</h1>
+            </header>
+            
+            <div class="calendar-card">
+                <div class="calendar-grid-header">
+                    <span>LUN</span><span>MART</span><span>MERC</span><span>GIOV</span><span>VEN</span><span>SAB</span><span>DOM</span>
+                </div>
+                <div id="calendar-grid" class="calendar-grid">
+                    <!-- Days injected via JS -->
+                </div>
+            </div>
+            
+            <div class="calendar-nav-controls">
+                <button id="prev-month" class="flat-btn icon-only" aria-label="Mese Precedente">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+                </button>
+                <button id="next-month" class="flat-btn icon-only" aria-label="Mese Successivo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- =================== DAY TASKS VIEW =================== -->
+        <div id="day-view" class="view scrollable-view">
+            <header class="app-header">
+                 <button id="back-to-cal-btn" class="flat-btn small">Torna Indietro</button>
+            </header>
+            
+            <header class="day-header">
+                <h2 id="current-day-display">Data Selezionata</h2>
+            </header>
+            
+            <div class="table-container">
+                <div id="tasks-container" class="tasks-container">
+                    <!-- Tasks injected via JS -->
+                </div>
+                
+                <div class="empty-state" id="empty-tasks-state" style="display: none;">
+                    <p>Nessuna task attiva. Creale dal menu "Aggiungi Task" nel calendario!</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- =================== TREND VIEW =================== -->
+        <div id="trend-view" class="view scrollable-view">
+            <header class="app-header">
+                <button class="flat-btn small back-to-home-btn">🏠 Home</button>
+            </header>
+
+            <header class="view-header">
+                <h2>Andamento Settimanale</h2>
+            </header>
+            <div class="view-content">
+                <div id="charts-container" class="charts-container">
+                    <!-- Canvases injected via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- =================== PROJECTS VIEW =================== -->
+        <div id="projects-view" class="view scrollable-view">
+            <header class="app-header">
+                <button class="flat-btn small back-to-home-btn">🏠 Home</button>
+                <button id="new-project-btn" class="flat-btn small primary">+ Nuovo</button>
+            </header>
+
+            <header class="view-header">
+                <h2>Preparazione Progetti</h2>
+            </header>
+            <div class="view-content">
+                <div id="projects-list-container" class="projects-list-container">
+                    <!-- Projects injected via JS -->
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    <script src="main.js"></script>
+</body>
+</html>
